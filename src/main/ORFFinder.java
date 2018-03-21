@@ -1,6 +1,6 @@
 package main;
 
-public class ORFFinder {
+public class ORFFinder extends GUI {
 
 	/**
 	 * @param args
