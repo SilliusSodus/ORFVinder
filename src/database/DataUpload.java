@@ -5,7 +5,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DataUpload {
-
+    
+    public void insertAll (sequentie.Sequentie sequentie){
+        for (ORF : sequentie)
+        insertORF(ORF);
+    }
+    
+    public void insertORF (sequentie.ORF ORF){
+        
+    }
+    
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         try {
         Class.forName("com.mysql.jdbc.Driver");
@@ -13,11 +22,10 @@ public class DataUpload {
         Statement smt = con.createStatement(); //Create Statement to interact
         ResultSet r = smt.executeQuery("select * from Soort");
             
-        while (r.next()) {
-          String soort = r.getString("Soort");
-            System.out.println("bier");
-            System.out.println(soort);
-        }
+        //while (r.next()) {
+          //String soort = r.getString("Soort");
+            //System.out.println(soort);
+        //}
         con.close();         
         } catch (com.mysql.jdbc.exceptions.jdbc4.CommunicationsException eex) {
             Logger.getLogger(DataUpload.class.getName()).log(Level.SEVERE, null, eex);
@@ -25,6 +33,7 @@ public class DataUpload {
             Logger.getLogger(DataUpload.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
 }
 //Queries
 //String Blast_vullen_q = "INSERT INTO BLAST (type,datum,blast_id,sequence_id)"

@@ -29,3 +29,6 @@ os.arch=amd64
 os.version=6.3
 derby.system.home=C:\Users\Erik\Desktop\ORFVinder
 Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Mon Mar 26 11:06:15 CEST 2018: Shutting down Derby engine
+----------------------------------------------------------------
