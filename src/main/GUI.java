@@ -5,11 +5,18 @@
  */
 package main;
 
+import javax.swing.JComboBox;
+
+import sequentie.Sequentie;
+
 /**
  *
  * @author Erik
  */
 public class GUI extends javax.swing.JFrame {
+	
+	protected JComboBox comboBox;
+	protected Sequentie currentSeq;
 
     /**
      * Creates new form NewJFrame
