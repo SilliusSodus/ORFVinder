@@ -43,6 +43,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
@@ -78,8 +79,11 @@ public class GUI extends javax.swing.JFrame {
 
         jMenu2.setText("File");
 
-        jMenuItem1.setText("Open");
+        jMenuItem1.setText("Open from file");
         jMenu2.add(jMenuItem1);
+
+        jMenuItem9.setText("Open from database");
+        jMenu2.add(jMenuItem9);
 
         jMenuItem2.setText("Save");
         jMenu2.add(jMenuItem2);
@@ -199,6 +203,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
