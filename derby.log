@@ -1,0 +1,31 @@
+Mon Mar 26 09:53:40 CEST 2018 : Apache Derby Network Server - 10.8.3.2 - (1557835) started and ready to accept connections on port 1527
+----------------------------------------------------------------
+Mon Mar 26 09:53:41 CEST 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.3.2 - (1557835): instance a816c00e-0162-614c-6aeb-ffffbe3e2cc5 
+on database directory C:\Users\Erik\Desktop\ORFVinder\ORFVinder  with class loader sun.misc.Launcher$AppClassLoader@46aea8cf 
+Loaded from file:/C:/Program%20Files/Java/jdk1.7.0_80/db/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_80-b15
+user.dir=C:\Program Files\Java\jdk1.7.0_80\db
+os.name=Windows 8.1
+os.arch=amd64
+os.version=6.3
+derby.system.home=C:\Users\Erik\Desktop\ORFVinder
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Mon Mar 26 09:53:42 CEST 2018:
+Shutting down instance a816c00e-0162-614c-6aeb-ffffbe3e2cc5 on database directory C:\Users\Erik\Desktop\ORFVinder\ORFVinder with class loader sun.misc.Launcher$AppClassLoader@46aea8cf 
+Mon Mar 26 09:53:42 CEST 2018 Thread[DRDAConnThread_4,5,main] (DATABASE = ORFVinder), (DRDAID = {2}), Database 'ORFVinder' shutdown.
+----------------------------------------------------------------
+Mon Mar 26 09:54:14 CEST 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.3.2 - (1557835): instance 6c44409f-0162-614c-6aeb-ffffbe3e2cc5 
+on database directory C:\Users\Erik\Desktop\ORFVinder\ORFVinder  with class loader sun.misc.Launcher$AppClassLoader@46aea8cf 
+Loaded from file:/C:/Program%20Files/Java/jdk1.7.0_80/db/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_80-b15
+user.dir=C:\Program Files\Java\jdk1.7.0_80\db
+os.name=Windows 8.1
+os.arch=amd64
+os.version=6.3
+derby.system.home=C:\Users\Erik\Desktop\ORFVinder
+Database Class Loader started - derby.database.classpath=''
