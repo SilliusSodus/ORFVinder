@@ -5,6 +5,8 @@
  */
 package main;
 
+import java.awt.Font;
+
 import javax.swing.JComboBox;
 
 import sequentie.Sequentie;
@@ -53,8 +55,13 @@ public class GUI extends javax.swing.JFrame {
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
+        jTextPane1 = new javax.swing.JTextPane();
 
         jFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        
+        jScrollPane1.setViewportView(jTextPane1);
+        
+        jTextPane1.setFont(new Font("monospaced", Font.PLAIN, 12));
 
         jMenu4.setText("File");
         jMenuBar2.add(jMenu4);
@@ -80,6 +87,11 @@ public class GUI extends javax.swing.JFrame {
         jMenu2.setText("File");
 
         jMenuItem1.setText("Open from file");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem1);
 
         jMenuItem9.setText("Open from database");
@@ -119,6 +131,8 @@ public class GUI extends javax.swing.JFrame {
 
         jMenu1.setText("Translate");
         jMenuBar1.add(jMenu1);
+        
+        
 
         setJMenuBar(jMenuBar1);
 
@@ -147,7 +161,6 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
@@ -206,5 +219,39 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextPane jTextPane1;
     // End of variables declaration//GEN-END:variables
+    
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        currentSeq = new Sequentie();
+        visualize();
+        
+        
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    
+    public void visualize(){
+    	String visu = "";
+    	int end =0;
+    	int begin = 0;
+    	visu += currentSeq.getSequentie1()+"\n";
+    	for(int i= 0; i < currentSeq.getOrflijst().size(); i++){
+    		if (i == 3){
+    			visu+="\n";
+    		}
+    		end = 0;
+    		for(int j = 0; j < currentSeq.getOrflijst().get(i).size(); j++){
+    			begin = currentSeq.getOrflijst().get(i).get(j).getBegin();
+    			for(int k = end; k< begin; k++){
+    				visu+=" ";
+    			}
+    			end = currentSeq.getOrflijst().get(i).get(j).getEnd();
+    			visu += currentSeq.getOrflijst().get(i).get(j).getSeq();
+    			
+    			
+    		}
+    		visu += "\n";
+    	}
+    	visu += new StringBuilder(currentSeq.getSequentie1()).reverse().toString();
+    	jTextPane1.setText(visu);
+    }
 }

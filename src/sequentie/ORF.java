@@ -4,14 +4,63 @@ public class ORF {
     int n;
     int k;
     int a = 0;
+    int begin,end;
+    String seq;
     String[] linesa = new String [10];
     String[] linesb = new String [10];
     
-  
+    ORF(String seq,int begin, int end){
+    	this.seq = seq;
+    	this.begin = begin;
+    	this.end = end;
+    }
 
     
+    
 
-    public String ORFB(String sequentie2,String sequentie1, int l,boolean check){
+    public int getBegin() {
+		return begin;
+	}
+
+
+
+
+	public void setBegin(int begin) {
+		this.begin = begin;
+	}
+
+
+
+
+	public int getEnd() {
+		return end;
+	}
+
+
+
+
+	public void setEnd(int end) {
+		this.end = end;
+	}
+
+
+
+
+	public String getSeq() {
+		return seq;
+	}
+
+
+
+
+	public void setSeq(String seq) {
+		this.seq = seq;
+	}
+
+
+
+
+	public void ORFB(String sequentie2,String sequentie1, int l,boolean check){
         k = 0;
         String orf = "";
         int r = l-sequentie2.length();
@@ -84,7 +133,7 @@ public class ORF {
         }
         else{
             //System.out.println("geen stop codon gevonden");
-        } return orf;
+        } seq =  orf;
     }
     public void ORFC(String sequentie1, boolean check){
         System.out.println("forward");
