@@ -4,31 +4,16 @@ public class ORF {
     int n;
     int k;
     int a = 0;
-    String[] lines = new String [10];
+    String[] linesa = new String [10];
+    String[] linesb = new String [10];
+    
   
 
-    public void ORFA(String sequentie1, int p, boolean check){
-     boolean t = false;
-        String sequentie2 ="";
-     for (int y=p; y+3<sequentie1.length();y+=3){
-        if (t==false && sequentie1.substring(y, y+3).equals("ATG")){
-           t = true;
-            sequentie2 = sequentie1.substring(y);
-            k +=sequentie1.length();
-        }
-       }
-     
-        if (t==true){
-        System.out.println("Lengte ingevoerde sequentie:"+sequentie1.length());
-
-        int l = sequentie1.length();
-        this.ORFB(sequentie2,sequentie1,l,check);
-        
-    }else System.out.println("geen orf gevonden");} 
     
 
-    public void ORFB(String sequentie2,String sequentie1, int l,boolean check){
+    public String ORFB(String sequentie2,String sequentie1, int l,boolean check){
         k = 0;
+        String orf = "";
         int r = l-sequentie2.length();
         for(int i = 0; i+3<sequentie2.length();i+=3){
             if(k!=i&& sequentie2.substring(i,i+3).contains("TAG")){
@@ -52,7 +37,8 @@ public class ORF {
         }
         
         if (k>0){
-        String orf = sequentie2.substring(0, k+3);
+            orf = sequentie2.substring(0, k+3);
+            
             String sequentie3 = sequentie2.substring(k+3);
             int Beginpunt = r;
             int Eindpunt = (k+3+r);
@@ -63,27 +49,28 @@ public class ORF {
                                                                                                 
                                                                         
                                                 
-             lines[a]="";
+             linesa[a]="";
+             linesb[a]="";
              
              if(!check){                       
             for(int b=0;b<Beginpunt;b++){
-                for (int a= 0; a<lines.length;a++){
-                lines[a]+=" "; 
+                for (int a= 0; a<linesa.length;a++){
+                linesa[a]+=" ";
                 }}}
              
              
              if(check){
                 for(int b=0;b<(sequentie1.length()-Eindpunt);b++){
-                for (int a= 0; a<lines.length;a++){
-                lines[a]+=" "; 
+                for (int a= 0; a<linesb.length;a++){
+                linesb[a]+=" "; 
                 }}}
              
                 if (check){
                      String x =new StringBuilder(orf).reverse().toString();
-                     lines[a]+=x;
+                     linesb[a]+=x;
                     
                     }else{
-                    lines[a]+=orf;}
+                    linesa[a]+=orf;}
                            
                
             for (int j = 0; j+3<sequentie3.length();j+=3){
@@ -97,12 +84,28 @@ public class ORF {
         }
         else{
             //System.out.println("geen stop codon gevonden");
-        }
+        } return orf;
     }
-    public void ORFC(String sequentie1){
-        for (int i = lines.length-1;i>0;i--){
-            System.out.println(lines[i]);
+    public void ORFC(String sequentie1, boolean check){
+        System.out.println("forward");
+        for (int i = linesa.length-1;i>0;i--){
+            if(linesa[i].contains("A")){
+             System.out.println(linesa[i]);    
+            }
         }
         System.out.println(sequentie1);
+        System.out.println("--------------------------------------------------------------------------------------------------------------------");
+        System.out.println("backward");
+        for (int i = linesb.length-1;i>0;i--){
+            if(linesb[i].contains("A")){
+             System.out.println(linesb[i]);    
+            }
+        }
+        System.out.println(sequentie1);
+        //return linesa, linesb;
     }
+    
+    
+    
+    
 }
