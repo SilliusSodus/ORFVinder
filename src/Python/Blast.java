@@ -13,13 +13,7 @@ public abstract class Blast {
 	private static String title = "Sequence"+blasts;
 	
 	
-	public static void main(String[] args) {
-		Blast(title,"ATCATCATACGGTGGTCTG","blastp","BLOSUM62","swissprot");
-
-	}
-	
-	
-	public static String Blast(String title, String seq, String typeBlast, String matrix, String dataBase){
+	public static void Blast(String title, String seq, String typeBlast, String matrix, String dataBase){
 		Runtime rt = Runtime.getRuntime();
 		try {
 			Process pr = rt.exec("python blast/autoblastnohtmlnext.py "+title+" "+seq+" "+typeBlast+" "+matrix+" "+dataBase);
@@ -32,7 +26,6 @@ public abstract class Blast {
 		
 		
 		blasts++;
-		return "Hello";
 	}
 	
 	
