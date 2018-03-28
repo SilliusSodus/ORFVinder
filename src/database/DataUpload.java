@@ -3,7 +3,7 @@ package database;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-/*
+
 public class DataUpload {
     
     public void insertAll (sequentie.Sequentie sequentie){
@@ -37,5 +37,5 @@ public class DataUpload {
 }
 //Queries
 //String Blast_vullen_q = "INSERT INTO BLAST (type,datum,blast_id,sequence_id)"
-*/
+
 
