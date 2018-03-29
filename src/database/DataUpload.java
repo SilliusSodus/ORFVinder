@@ -32,7 +32,7 @@ public class DataUpload {
      * input zijn het xml bestand en de sequentie als string
      * geen output
      */
-    private static void xml_Reader(File xml, String seq) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException, ClassNotFoundException, SQLException {
+    public static void xml_Reader(File xml, String seq) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException, ClassNotFoundException, SQLException {
         File inputFile = xml;
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
