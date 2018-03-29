@@ -195,6 +195,7 @@ public class GUI extends javax.swing.JFrame {
     		String seq = JOptionPane.showInputDialog("Copy and paste the ORF you wish to blast:");
 	    	if (seq.length()>0){
 	    		Blast.Blast(currentSeq.getTitel().split(" ")[0], seq, evt.getActionCommand().toLowerCase(), "BLOSUM62", "nr");
+	    		JOptionPane.showMessageDialog(null, "You can find the blast results in the \"BlastResults\" folder.");
 	    	}
 	    	else{
 	    		JOptionPane.showMessageDialog(null,"Bigger meanie");
@@ -206,7 +207,7 @@ public class GUI extends javax.swing.JFrame {
     }
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) throws ClassNotFoundException, SQLException, UnsupportedEncodingException {
-        database.DataUpload.main(currentSeq);
+        //database.DataUpload.main(currentSeq);
     }
 
     /**
