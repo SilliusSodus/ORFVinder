@@ -16,6 +16,10 @@ import sequentie.ORF;
 
 public class DataUpload {
 
+        /**Wordt gebruikt om de sequentie om te zetten naar een blob
+     * input: sequentie als string
+     * output is een blob
+     */
     public static Blob makeBlob(String seq) throws ClassNotFoundException, SQLException, UnsupportedEncodingException {
         Class.forName("com.mysql.jdbc.Driver");
         Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ORFVinder", "owe7_pg5", "blaat1234");
@@ -23,7 +27,11 @@ public class DataUpload {
         Blob blobData = con.createBlob();
         return blobData;
     }
-
+    
+        /**Wordt gebruikt om de XML te lezen en de data in de database te zetten
+     * input zijn het xml bestand en de sequentie als string
+     * geen output
+     */
     private static void xml_Reader(File xml, String seq) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException, ClassNotFoundException, SQLException {
         File inputFile = xml;
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -67,7 +75,11 @@ public class DataUpload {
         }
 
     }
-
+    
+    /**Wordt om het value deel van de insert querys op te bouwen
+     * input zijn de tabel in kwestie
+     * output is het value deel van de insert query
+     */
     public static String values(String tabel) {
         String values = "";
         if (null != tabel) {
@@ -88,11 +100,14 @@ public class DataUpload {
                     values = "values(?,?,?,?.?)";
                     break;
             }
-        } else {
         }
         return values;
     }
-
+    
+    /**Wordt gebruikt om de insert querys te maken en uitvoeren
+     * input zijn de tabel waar iets in moet komen en de waardes in een string geshceiden door een komma
+     * geen output
+     */
     public static void insertQueryBuilder(String tabel, String ruwe_values) throws ClassNotFoundException, SQLException, UnsupportedEncodingException {
         Class.forName("com.mysql.jdbc.Driver");
         Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ORFVinder", "owe7_pg5", "blaat1234");
@@ -149,6 +164,10 @@ public class DataUpload {
         con.close();
     }
 
+    /**Wordt gebruikt om gegevens van een orf object op te vragen
+     * input is het orf object
+     * output is de locatie en de lengte van het orf smaen in een string gescheiden door een komma
+     */
     private static String orf(sequentie.ORF orf) {
         int locatie = orf.getBegin();
         int eind = orf.getEnd();
@@ -157,11 +176,19 @@ public class DataUpload {
         return orfString;
     }
 
+    /**Wordt gebruikt om sequentie uit een sequentie object te halen
+     * input zijn het sequentie object en het coderingstype
+     * oput zijn de sequentie en het coderingstype in een string gesxheiden door een komma
+     */
     private static String seq(sequentie.Sequentie sequentie, String coderingstype) {
         String seq = sequentie.getSequentie1();
         return seq + "," + coderingstype;
     }
 
+    /**Wordt gebruikt om het unieke id van een entry in een tabel te bepalen
+     * input zijn de betreffende tabel en de string waarmee moet worden vergeleken
+     * output is het id van de btreffende entry
+     */
     public static int getID(String tabel, String vergelijken) throws ClassNotFoundException, SQLException, UnsupportedEncodingException {
         Class.forName("com.mysql.jdbc.Driver");
         Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ORFVinder", "owe7_pg5", "blaat1234");
@@ -198,6 +225,10 @@ public class DataUpload {
 
     }
 
+    /**De main die alle andere methodes aanroept
+     * input zijn het xml bestand ,een sequentie object en het coderingstype als string
+     * geen output
+     */
     public static void main(String coderingstype, File xml, sequentie.Sequentie sequentieObject) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException, ClassNotFoundException, SQLException {
         insertQueryBuilder("coderingstype", coderingstype);
         insertQueryBuilder("sequentie", seq(sequentieObject, coderingstype));
