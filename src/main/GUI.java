@@ -241,7 +241,11 @@ public class GUI extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         currentSeq = new Sequentie();
         visualize();
-        
+        for(int i =0; i<currentSeq.getOrflijst().size();i++){
+            jTextPanedos.setText(jTextPanedos.getText()+"\n \n Frame "+(i+1)+":");
+            for(int j = 0; j<currentSeq.getOrflijst().get(i).size();j++){
+                jTextPanedos.setText(jTextPanedos.getText()+"\n "+currentSeq.getOrflijst().get(i).get(j).getSeq() + "  Locatie: "+currentSeq.getOrflijst().get(i).get(j).getBegin() + " - " + currentSeq.getOrflijst().get(i).get(j).getEnd());
+            }}
         
     }//GEN-LAST:event_jMenuItem1ActionPerformed
     

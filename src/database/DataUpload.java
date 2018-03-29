@@ -3,6 +3,7 @@ package database;
 import java.io.*;
 import java.sql.*;
 import java.text.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.xml.parsers.*;
@@ -11,9 +12,26 @@ import javax.xml.xpath.*;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
+import sequentie.ORF;
 
 public class DataUpload {
 
+        /**Wordt gebruikt om de sequentie om te zetten naar een blob
+     * input: sequentie als string
+     * output is een blob
+     */
+    public static Blob makeBlob(String seq) throws ClassNotFoundException, SQLException, UnsupportedEncodingException {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ORFVinder", "owe7_pg5", "blaat1234");
+        byte[] byteData = seq.getBytes("UTF-8");//Better to specify encoding
+        Blob blobData = con.createBlob();
+        return blobData;
+    }
+    
+        /**Wordt gebruikt om de XML te lezen en de data in de database te zetten
+     * input zijn het xml bestand en de sequentie als string
+     * geen output
+     */
     private static void xml_Reader(File xml, String seq) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException, ClassNotFoundException, SQLException {
         File inputFile = xml;
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -57,7 +75,11 @@ public class DataUpload {
         }
 
     }
-
+    
+    /**Wordt om het value deel van de insert querys op te bouwen
+     * input zijn de tabel in kwestie
+     * output is het value deel van de insert query
+     */
     public static String values(String tabel) {
         String values = "";
         if (null != tabel) {
@@ -78,89 +100,113 @@ public class DataUpload {
                     values = "values(?,?,?,?.?)";
                     break;
             }
-        } else {
         }
         return values;
     }
-
-    public static void insertQueryBuilder(String tabel, String ruwe_values) throws ClassNotFoundException, SQLException {
+    
+    /**Wordt gebruikt om de insert querys te maken en uitvoeren
+     * input zijn de tabel waar iets in moet komen en de waardes in een string geshceiden door een komma
+     * geen output
+     */
+    public static void insertQueryBuilder(String tabel, String ruwe_values) throws ClassNotFoundException, SQLException, UnsupportedEncodingException {
         Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ORFVinder", "owe7_pg5", "blaat1234");
+        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ORFVinder databank", "owe7_pg5", "blaat1234");
         String values = values(tabel);
         PreparedStatement pst = con.prepareStatement("insert into " + tabel + " " + values + "");
         String[] valueslijst = ruwe_values.split(",");
-        
-        if (null != tabel) switch (tabel) {
-            case "coderingstype":
-                int iD = getID(tabel, ruwe_values);
-                pst.setString(1, ruwe_values);
-                pst.setInt(2, iD);
-                break;
-            case "blast":{
-                int iDBlast = getID(tabel, ruwe_values);
-                int iDSeq = getID("sequentie", valueslijst[2]);
-                pst.setString(1, valueslijst[0]);
-                pst.setString(2, valueslijst[1]);
-                pst.setInt(3, iDBlast);
-                pst.setInt(4, iDSeq);
-                break;
+
+        if (null != tabel) {
+            switch (tabel) {
+                case "coderingstype":
+                    int iD = getID(tabel, ruwe_values);
+                    pst.setString(1, ruwe_values);
+                    pst.setInt(2, iD);
+                    break;
+                case "blast": {
+                    int iDBlast = getID(tabel, ruwe_values);
+                    int iDSeq = getID("sequentie", valueslijst[2]);
+                    pst.setString(1, valueslijst[0]);
+                    pst.setString(2, valueslijst[1]);
+                    pst.setInt(3, iDBlast);
+                    pst.setInt(4, iDSeq);
+                    break;
                 }
-            case "blastresult":{
-                int iDBlast = getID("blast", ruwe_values);
-                pst.setDouble(1, Double.parseDouble(valueslijst[4]));
-                pst.setInt(2, Integer.getInteger(valueslijst[5]));
-                pst.setString(3, valueslijst[2]);
-                pst.setString(4, valueslijst[3]);
-                pst.setInt(5, iDBlast);
-                pst.setDouble(6, Double.parseDouble(valueslijst[6]));
-                break;
-            }
-            case "orf":{
+                case "blastresult": {
+                    int iDBlast = getID("blast", ruwe_values);
+                    pst.setDouble(1, Double.parseDouble(valueslijst[4]));
+                    pst.setInt(2, Integer.getInteger(valueslijst[5]));
+                    pst.setString(3, valueslijst[2]);
+                    pst.setString(4, valueslijst[3]);
+                    pst.setInt(5, iDBlast);
+                    pst.setDouble(6, Double.parseDouble(valueslijst[6]));
+                    break;
+                }
+                case "orf": {
                     int iDOrf = getID("orf", valueslijst[0]);
                     pst.setInt(1, Integer.getInteger(valueslijst[0]));
                     pst.setInt(2, Integer.getInteger(valueslijst[1]));
                     pst.setInt(3, iDOrf);
                     break;
-            }
-            case "sequentie":{
+                }
+                case "sequentie": {
+                    Blob seqBlob = makeBlob(valueslijst[0]);
                     int iDSeq = getID("sequentie", valueslijst[0]);
-                    int iDCoderingstype = getID("coderingstype", valueslijst[2]);
-                    pst.setString(1, valueslijst[0]);
-                    pst.setString(2, valueslijst[1]);
-                    pst.setInt(3, iDSeq);
-                    pst.setInt(4, iDCoderingstype);
+                    int iDCoderingstype = getID("coderingstype", valueslijst[1]);
+                    pst.setBlob(1, seqBlob);
+                    pst.setInt(2, iDSeq);
+                    pst.setInt(3, iDCoderingstype);
                     break;
+                }
             }
         }
-        
+
         pst.executeUpdate();
+        con.close();
     }
-    
-    private static String orf(sequentie.ORF orf){
+
+    /**Wordt gebruikt om gegevens van een orf object op te vragen
+     * input is het orf object
+     * output is de locatie en de lengte van het orf smaen in een string gescheiden door een komma
+     */
+    private static String orf(sequentie.ORF orf) {
         int locatie = orf.getBegin();
-        int eind = orf.getEind();
-        int lengte = eind-locatie;
+        int eind = orf.getEnd();
+        int lengte = eind - locatie;
         String orfString = locatie + "," + lengte;
         return orfString;
     }
-    
-    private static String seq(sequentie.Sequentie sequentie, String coderingstype){
-        String organisme = sequentie.getOrganisme();
+
+    /**Wordt gebruikt om sequentie uit een sequentie object te halen
+     * input zijn het sequentie object en het coderingstype
+     * oput zijn de sequentie en het coderingstype in een string gesxheiden door een komma
+     */
+    private static String seq(sequentie.Sequentie sequentie, String coderingstype) {
         String seq = sequentie.getSequentie1();
-        return seq + "," + organisme + "," + coderingstype;
+        return seq + "," + coderingstype;
     }
 
-    public static int getID(String tabel, String vergelijken) throws ClassNotFoundException, SQLException {
+    /**Wordt gebruikt om het unieke id van een entry in een tabel te bepalen
+     * input zijn de betreffende tabel en de string waarmee moet worden vergeleken
+     * output is het id van de btreffende entry
+     */
+    public static int getID(String tabel, String vergelijken) throws ClassNotFoundException, SQLException, UnsupportedEncodingException {
         Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ORFVinder", "owe7_pg5", "blaat1234");
+        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ORFVinder databank", "owe7_pg5", "blaat1234");
         Statement smt = con.createStatement();
         int iD = 0;
         ResultSet idSet = null;
+        PreparedStatement pst = con.prepareStatement("select " + (tabel + "_ID") + " from" + tabel + " where " + tabel+ " = (?)");
+        if ("sequentie".equals(tabel)) {
+            Blob vergelijkBlob = makeBlob(vergelijken);
+            pst.setBlob(1, vergelijkBlob);
+            idSet = pst.executeQuery();
+        }
         if ("blast".equals(tabel)) {
             String[] valueslijst = vergelijken.split(",");
             idSet = smt.executeQuery("SELECT " + (tabel + "_ID") + " FROM " + tabel + " WHERE type = '" + valueslijst[0] + "' AND datum  = '" + valueslijst[1] + "'");
         } else {
-            idSet = smt.executeQuery("SELECT " + (tabel + "_ID") + " FROM " + tabel + " WHERE " + tabel + " = '" + vergelijken + "'");
+            pst.setString(1, vergelijken);
+            idSet = pst.executeQuery();
         }
         while (idSet.next()) {
             iD = idSet.getInt((tabel + "_ID"));
@@ -179,13 +225,19 @@ public class DataUpload {
 
     }
 
+    /**De main die alle andere methodes aanroept
+     * input zijn het xml bestand ,een sequentie object en het coderingstype als string
+     * geen output
+     */
     public static void main(String coderingstype, File xml, sequentie.Sequentie sequentieObject) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException, ClassNotFoundException, SQLException {
         insertQueryBuilder("coderingstype", coderingstype);
         insertQueryBuilder("sequentie", seq(sequentieObject, coderingstype));
-        xml_Reader(xml, sequentieObject.getSequentie());
+        xml_Reader(xml, sequentieObject.getSequentie1());
+        for (ArrayList<ORF> orfobjectlist : sequentieObject.getOrflijst()) {
+            for (sequentie.ORF orfobject : orfobjectlist) {
+                insertQueryBuilder("orf", orf(orfobject));
+            }
+        }
     }
 
 }
-//Queries
-//String Blast_vullen_q = "INSERT INTO BLAST (type,datum,blast_id,sequence_id)"
-
