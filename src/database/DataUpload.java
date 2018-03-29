@@ -110,7 +110,7 @@ public class DataUpload {
      */
     public static void insertQueryBuilder(String tabel, String ruwe_values) throws ClassNotFoundException, SQLException, UnsupportedEncodingException {
         Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ORFVinder", "owe7_pg5", "blaat1234");
+        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ORFVinder databank", "owe7_pg5", "blaat1234");
         String values = values(tabel);
         PreparedStatement pst = con.prepareStatement("insert into " + tabel + " " + values + "");
         String[] valueslijst = ruwe_values.split(",");
@@ -191,7 +191,7 @@ public class DataUpload {
      */
     public static int getID(String tabel, String vergelijken) throws ClassNotFoundException, SQLException, UnsupportedEncodingException {
         Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ORFVinder", "owe7_pg5", "blaat1234");
+        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ORFVinder databank", "owe7_pg5", "blaat1234");
         Statement smt = con.createStatement();
         int iD = 0;
         ResultSet idSet = null;
