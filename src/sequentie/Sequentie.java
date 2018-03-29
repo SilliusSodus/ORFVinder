@@ -69,15 +69,11 @@ public class Sequentie {
             orflijst.add(new ArrayList<ORF>());
         }
         check = false;
-<<<<<<< HEAD
         String[] seq = FileOpener.FileOpener();
         this.titel = seq[0];
         this.sequentie1 = seq[1];
         //ORF a= new ORF();
-=======
-        sequentie1 = FileOpener.FileOpener();
-        System.out.println(sequentie1);
->>>>>>> origin/master
+
         
 
         for (int p =0; p <orflijst.size();p++){
