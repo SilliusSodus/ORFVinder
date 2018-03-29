@@ -6,8 +6,16 @@
 package main;
 
 import java.awt.Font;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 
 import Python.Blast;
 
@@ -129,6 +137,7 @@ public class GUI extends javax.swing.JFrame {
         jMenu3.add(jMenuItem7);
         
         for(int i=0;i<jMenu3.getItemCount();i++){
+        	
         	jMenu3.getItem(i).addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jMenu3ActionPerformed(evt, jMenu3);
@@ -138,8 +147,8 @@ public class GUI extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
-        jMenu1.setText("Translate");
-        jMenuBar1.add(jMenu1);
+        //jMenu1.setText("Translate");
+        //jMenuBar1.add(jMenu1);
         
         
 
@@ -170,7 +179,18 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt, javax.swing.JMenu menu){
-    	Blast.Blast(currentSeq.getTitel().split(" ")[0], currentSeq.getSequentie1(), evt.getActionCommand().toLowerCase(), "BLOSUM62", "nr");
+    	try{
+    		String seq = JOptionPane.showInputDialog("Copy and paste the ORF you wish to blast:");
+	    	if (seq.length()>0){
+	    		Blast.Blast(currentSeq.getTitel().split(" ")[0], seq, evt.getActionCommand().toLowerCase(), "BLOSUM62", "nr");
+	    	}
+	    	else{
+	    		JOptionPane.showMessageDialog(null,"Bigger meanie");
+	    	}
+    	}
+    	catch(Exception e){
+    		JOptionPane.showMessageDialog(null,"Meanie");
+    	}
     }
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -242,33 +262,48 @@ public class GUI extends javax.swing.JFrame {
             jTextPanedos.setText(jTextPanedos.getText()+"\n \n Frame "+(i+1)+":");
             for(int j = 0; j<currentSeq.getOrflijst().get(i).size();j++){
                 jTextPanedos.setText(jTextPanedos.getText()+"\n "+currentSeq.getOrflijst().get(i).get(j).getSeq() + "  Locatie: "+currentSeq.getOrflijst().get(i).get(j).getBegin() + " - " + currentSeq.getOrflijst().get(i).get(j).getEnd());
-            }}
+            }
+         }
         
     }//GEN-LAST:event_jMenuItem1ActionPerformed
     
     public void visualize(){
-    	String visu = "";
+    	StringBuilder visu = new StringBuilder();
     	int end =0;
     	int begin = 0;
-    	visu += currentSeq.getSequentie1()+"\n";
+    	visu.append(currentSeq.getSequentie1()+"\n") ;
     	for(int i= 0; i < currentSeq.getOrflijst().size(); i++){
     		if (i == 3){
-    			visu+="\n";
+    			visu.append("\n");
     		}
     		end = 0;
     		for(int j = 0; j < currentSeq.getOrflijst().get(i).size(); j++){
     			begin = currentSeq.getOrflijst().get(i).get(j).getBegin();
     			for(int k = end; k< begin; k++){
-    				visu+=" ";
+    				visu.append(" ");
     			}
     			end = currentSeq.getOrflijst().get(i).get(j).getEnd();
-    			visu += currentSeq.getOrflijst().get(i).get(j).getSeq();
+    			visu.append(currentSeq.getOrflijst().get(i).get(j).getSeq());
     			
     			
     		}
-    		visu += "\n";
+    		visu.append("\n");
     	}
-    	visu += new StringBuilder(currentSeq.getSequentie1()).reverse().toString();
-    	jTextPane1.setText(visu);
+    	visu.append(new StringBuilder(currentSeq.getSequentie1()).reverse().toString());
+    	Writer writer;
+    	try {
+			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("rapport.html"), "utf-8"));
+			writer.write(visu.toString());
+			writer.close();
+		} catch (UnsupportedEncodingException | FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	jTextPane1.setText(visu.toString());
     }
+    
 }

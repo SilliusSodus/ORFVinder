@@ -17,15 +17,13 @@ def blast(titel,seq,typeBlast, matrix,dataBase):
 	busy = True
 	while busy:
 		#try:
-			blastje = NCBIWWW.qblast(program = typeBlast, database = dataBase, sequence = seq,word_size = 6, matrix_name= "BLOSUM62")
+			blastje = NCBIWWW.qblast(program = typeBlast, database = dataBase, sequence = seq,word_size = 6, matrix_name= matrix)
 			busy = False
 		#except:
 		#	print("Shit's broke")
 		#	time.sleep(60)
 	with open("%s/%s%s.xml"%(directory, titel, typeBlast),"w") as out_handle:
 		out_handle.write(blastje.read())
-	for record in NCBIXML.parse(open("%s/%s%s.xml"%(directory, titel, typeBlast))):
-                return len(record.alignments)<1
 
 
 

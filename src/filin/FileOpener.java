@@ -20,7 +20,7 @@ public static String[] FileOpener(){
 
         
         BufferedReader br = null;
-	FileReader fr = null;
+        FileReader fr = null;
         
         try{
 	        fr = new FileReader(PATHWAY);
