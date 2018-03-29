@@ -82,21 +82,27 @@ public class Sequentie {
         }
     }
     
-   /** ORFA methode wordt gebruikt voor het vinden van het startcodon, en het knippen van de sequentie op basis van het startcodon en stopcodon
-    * input is frame, frame forward/backward check, sequentie
-    * output is orf die toegevoegd wordt in de orflijst
-    */
-    
+     /**Wordt gebruikt om de titel op te vragen
+     * geen input
+     * output is de titel
+     */
+        
     public String getTitel() {
 		return titel;
 	}
 
-
+    /**Wordt gebruikt om de titel te vervangen
+     * input is een titel
+     * geen output
+     */
 	public void setTitel(String titel) {
 		this.titel = titel;
 	}
 
-
+    /** ORFA methode wordt gebruikt voor het vinden van het startcodon, en het knippen van de sequentie op basis van het startcodon en stopcodon
+    * input is frame, frame forward/backward check, sequentie
+    * output is orf die toegevoegd wordt in de orflijst
+    */
 	public void ORFA( int p, boolean check){
     	String seq = this.sequentie1;
     	
