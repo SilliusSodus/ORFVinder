@@ -25,25 +25,21 @@ public abstract class Blast {
 	public static void Blast(String title, String seq, String typeBlast, String matrix, String dataBase){
 		Runtime rt = Runtime.getRuntime();
 		try {
-			Process pr = rt.exec("python blast/autoblastnohtmlnext.py "+title+" "+seq+" "+typeBlast+" "+matrix+" "+dataBase);
+			System.out.println("python blast/autoblastnohtmlnext.py "+title.substring(1)+" "+seq+" "+typeBlast+" "+matrix+" "+dataBase);
+			Process pr = rt.exec("python blast/autoblastnohtmlnext.py "+title.substring(1)+" "+seq+" "+typeBlast+" "+matrix+" "+dataBase);
 			BufferedReader br = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 			System.out.println(br.readLine());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		try {
-			DataUpload.xml_Reader(new File("BlastResults/"+title), seq);
+			DataUpload.xml_Reader(new File("BlastResults/"+title.substring(1)+typeBlast.toLowerCase()+".xml"), seq);
 		} catch (XPathExpressionException | ClassNotFoundException
 				| ParserConfigurationException | SAXException | IOException
 				| SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		blasts++;
 	}
-	
-	
-	
 }

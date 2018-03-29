@@ -116,9 +116,6 @@ public class GUI extends javax.swing.JFrame {
 
         jMenu3.setText("BLAST");
 
-        jMenuItem4.setText("BLASTp");
-        jMenu3.add(jMenuItem4);
-
         jMenuItem5.setText("BLASTn");
         jMenu3.add(jMenuItem5);
 
