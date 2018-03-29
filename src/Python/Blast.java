@@ -16,7 +16,6 @@ public abstract class Blast {
 	public static void Blast(String title, String seq, String typeBlast, String matrix, String dataBase){
 		Runtime rt = Runtime.getRuntime();
 		try {
-			System.out.println("python blast/autoblastnohtmlnext.py "+title+" "+seq+" "+typeBlast+" "+matrix+" "+dataBase);
 			Process pr = rt.exec("python blast/autoblastnohtmlnext.py "+title+" "+seq+" "+typeBlast+" "+matrix+" "+dataBase);
 			BufferedReader br = new BufferedReader(new InputStreamReader(pr.getInputStream()));
 			System.out.println(br.readLine());
