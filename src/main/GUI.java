@@ -103,6 +103,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuItem3.setText("Save to database");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	System.out.println("hoi");
                 jMenuItem3ActionPerformed(evt);
             }
         });
@@ -126,6 +127,14 @@ public class GUI extends javax.swing.JFrame {
 
         jMenuItem7.setText("tBLASTn");
         jMenu3.add(jMenuItem7);
+        
+        for(int i=0;i<jMenu3.getComponentCount();i++){
+        	jMenu3.getItem(i).addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jMenu3ActionPerformed(evt, jMenu3);
+                }
+            });
+        }
 
         jMenuBar1.add(jMenu3);
 
@@ -159,6 +168,11 @@ public class GUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt, javax.swing.JMenu menu){
+    	System.out.println(evt.getActionCommand());
+    	System.out.println("hoi");
+    }
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
     }//GEN-LAST:event_jMenuItem3ActionPerformed
