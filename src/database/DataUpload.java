@@ -84,9 +84,6 @@ public class DataUpload {
         String values = "";
         if (null != tabel) {
             switch (tabel) {
-                case "coderingstype":
-                    values = "values(?,?)";
-                    break;
                 case "blast":
                     values = "values(?,?,?,?)";
                     break;
@@ -97,7 +94,7 @@ public class DataUpload {
                     values = "values(?,?,?,?,?.?)";
                     break;
                 case "sequentie":
-                    values = "values(?,?,?,?.?)";
+                    values = "values(?,?)";
                     break;
             }
         }
@@ -117,11 +114,6 @@ public class DataUpload {
 
         if (null != tabel) {
             switch (tabel) {
-                case "coderingstype":
-                    int iD = getID(tabel, ruwe_values);
-                    pst.setString(1, ruwe_values);
-                    pst.setInt(2, iD);
-                    break;
                 case "blast": {
                     int iDBlast = getID(tabel, ruwe_values);
                     int iDSeq = getID("sequentie", valueslijst[2]);
@@ -151,10 +143,8 @@ public class DataUpload {
                 case "sequentie": {
                     Blob seqBlob = makeBlob(valueslijst[0]);
                     int iDSeq = getID("sequentie", valueslijst[0]);
-                    int iDCoderingstype = getID("coderingstype", valueslijst[1]);
                     pst.setBlob(1, seqBlob);
                     pst.setInt(2, iDSeq);
-                    pst.setInt(3, iDCoderingstype);
                     break;
                 }
             }
@@ -174,15 +164,6 @@ public class DataUpload {
         int lengte = eind - locatie;
         String orfString = locatie + "," + lengte;
         return orfString;
-    }
-
-    /**Wordt gebruikt om sequentie uit een sequentie object te halen
-     * input zijn het sequentie object en het coderingstype
-     * oput zijn de sequentie en het coderingstype in een string gesxheiden door een komma
-     */
-    private static String seq(sequentie.Sequentie sequentie, String coderingstype) {
-        String seq = sequentie.getSequentie1();
-        return seq + "," + coderingstype;
     }
 
     /**Wordt gebruikt om het unieke id van een entry in een tabel te bepalen
@@ -229,10 +210,8 @@ public class DataUpload {
      * input zijn het xml bestand ,een sequentie object en het coderingstype als string
      * geen output
      */
-    public static void main(String coderingstype, File xml, sequentie.Sequentie sequentieObject) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException, ClassNotFoundException, SQLException {
-        insertQueryBuilder("coderingstype", coderingstype);
-        insertQueryBuilder("sequentie", seq(sequentieObject, coderingstype));
-        xml_Reader(xml, sequentieObject.getSequentie1());
+    public static void main(sequentie.Sequentie sequentieObject) throws ClassNotFoundException, SQLException, UnsupportedEncodingException {
+        insertQueryBuilder("sequentie", sequentieObject.getSequentie1());
         for (ArrayList<ORF> orfobjectlist : sequentieObject.getOrflijst()) {
             for (sequentie.ORF orfobject : orfobjectlist) {
                 insertQueryBuilder("orf", orf(orfobject));
