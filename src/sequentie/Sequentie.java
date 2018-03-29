@@ -5,7 +5,7 @@ import java.util.*;
 import main.GUI;
 
 public class Sequentie {
-    String sequentie1;
+    String sequentie1,titel;
     int locatie;
     boolean check; 
     ArrayList<ArrayList<ORF>> orflijst = new ArrayList<ArrayList<ORF>>() ;
@@ -46,8 +46,9 @@ public class Sequentie {
             orflijst.add(new ArrayList<ORF>());
         }
         check = false;
-        sequentie1 = FileOpener.FileOpener();
-        System.out.println(sequentie1);
+        String[] seq = FileOpener.FileOpener();
+        this.titel = seq[0];
+        this.sequentie1 = seq[1];
         //ORF a= new ORF();
         
 
@@ -67,7 +68,17 @@ public class Sequentie {
     }
     
     
-    public void ORFA( int p, boolean check){
+    public String getTitel() {
+		return titel;
+	}
+
+
+	public void setTitel(String titel) {
+		this.titel = titel;
+	}
+
+
+	public void ORFA( int p, boolean check){
     	String seq = this.sequentie1;
     	
 	    if (check){
@@ -78,7 +89,6 @@ public class Sequentie {
 	     for (int y=p; y+3<sequentie1.length();y+=3){
 	    	 if (seq.substring(y, y+3).equals("ATG")){
 	        	int end = findStopCodon(seq, y);
-	        	System.out.println(end);
 	        	if(end != -1){
 	        		orflijst.get(p).add(new ORF(seq.substring(y,end),y,end));
 	            	y = end;

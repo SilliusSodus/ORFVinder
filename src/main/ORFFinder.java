@@ -1,5 +1,7 @@
 package main;
 
+import Python.Blast;
+
 public class ORFFinder extends GUI {
 
 	/**

@@ -9,6 +9,8 @@ import java.awt.Font;
 
 import javax.swing.JComboBox;
 
+import Python.Blast;
+
 import sequentie.Sequentie;
 
 /**
@@ -56,10 +58,12 @@ public class GUI extends javax.swing.JFrame {
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jTextPane1 = new javax.swing.JTextPane();
+        jTextPanedos =  new javax.swing.JTextPane();
 
         jFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         
         jScrollPane1.setViewportView(jTextPane1);
+        jScrollPane2.setViewportView(jTextPanedos);
         
         jTextPane1.setFont(new Font("monospaced", Font.PLAIN, 12));
 
@@ -103,7 +107,6 @@ public class GUI extends javax.swing.JFrame {
         jMenuItem3.setText("Save to database");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-            	System.out.println("hoi");
                 jMenuItem3ActionPerformed(evt);
             }
         });
@@ -128,7 +131,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuItem7.setText("tBLASTn");
         jMenu3.add(jMenuItem7);
         
-        for(int i=0;i<jMenu3.getComponentCount();i++){
+        for(int i=0;i<jMenu3.getItemCount();i++){
         	jMenu3.getItem(i).addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     jMenu3ActionPerformed(evt, jMenu3);
@@ -170,8 +173,7 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt, javax.swing.JMenu menu){
-    	System.out.println(evt.getActionCommand());
-    	System.out.println("hoi");
+    	Blast.Blast(currentSeq.getTitel().split(" ")[0], currentSeq.getSequentie1(), evt.getActionCommand().toLowerCase(), "BLOSUM62", "nr");
     }
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -233,7 +235,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JTextPane jTextPane1,jTextPanedos;
     // End of variables declaration//GEN-END:variables
     
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
