@@ -22,6 +22,15 @@ public abstract class Blast {
 	private static String title = "Sequence"+blasts;
 	
 	
+	
+	/**
+	 * Blast 
+	 * @param title
+	 * @param seq
+	 * @param typeBlast
+	 * @param matrix
+	 * @param dataBase
+	 */
 	public static void Blast(String title, String seq, String typeBlast, String matrix, String dataBase){
 		Runtime rt = Runtime.getRuntime();
 		try {
@@ -31,6 +40,7 @@ public abstract class Blast {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		//De database werkt nog niet
 		/*
 		try {
 			DataUpload.xml_Reader(new File("BlastResults/"+title.substring(1)+typeBlast.toLowerCase()+".xml"), seq);

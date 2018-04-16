@@ -49,22 +49,13 @@ public class Sequentie {
         String[] seq = FileOpener.FileOpener();
         this.titel = seq[0];
         this.sequentie1 = seq[1];
-        //ORF a= new ORF();
         
 
         for (int p =0; p <orflijst.size();p++){
             check = p+1>(orflijst.size()/2);
             ORFA(p,check);
                 
-            
-        }
-   
-        
-        //a.ORFC(sequentie1,check);
-        
-        
-        
-        
+        }       
     }
     
     
@@ -84,8 +75,6 @@ public class Sequentie {
 	    if (check){
 	      seq =new StringBuilder(this.sequentie1).reverse().toString();
 	    }
-	     //boolean t = false;
-	        //String sequentie2 ="";
 	     for (int y=p; y+3<sequentie1.length();y+=3){
 	    	 if (seq.substring(y, y+3).equals("ATG")){
 	        	int end = findStopCodon(seq, y);
@@ -93,17 +82,8 @@ public class Sequentie {
 	        		orflijst.get(p).add(new ORF(seq.substring(y,end),y,end));
 	            	y = end;
 	        	}
-	            //t = true;
-	            //sequentie2 = seq.substring(y);
-	        }
-	       }
-	     /*
-	        if (t==true){
-	        System.out.println("Lengte ingevoerde sequentie:"+sequentie1.length());
-	        int l = sequentie1.length();
-	        String b = this.ORFB(sequentie2,sequentie1,l,check);
-	        
-	    }else System.out.println("geen orf gevonden");*/
+	    	 }
+	     }
     } 
     
     
