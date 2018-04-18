@@ -18,6 +18,7 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 import Python.Blast;
+import filin.FileOpener.notFasta;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -71,6 +72,7 @@ public class GUI extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jTextPane1 = new javax.swing.JTextPane();
         jTextPanedos =  new javax.swing.JTextPane();
+        
 
         jFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         
@@ -270,15 +272,19 @@ public class GUI extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        currentSeq = new Sequentie();
-        visualize();
-        for(int i =0; i<currentSeq.getOrflijst().size();i++){
-            jTextPanedos.setText(jTextPanedos.getText()+"\n \n Frame "+(i+1)+":");
-            for(int j = 0; j<currentSeq.getOrflijst().get(i).size();j++){
-                jTextPanedos.setText(jTextPanedos.getText()+"\n "+currentSeq.getOrflijst().get(i).get(j).getSeq() + "  Locatie: "+currentSeq.getOrflijst().get(i).get(j).getBegin() + " - " + currentSeq.getOrflijst().get(i).get(j).getEnd());
-            }
-         }
+        try{
+            currentSeq = new Sequentie();
         
+            visualize();
+            for(int i =0; i<currentSeq.getOrflijst().size();i++){
+                jTextPanedos.setText(jTextPanedos.getText()+"\n \n Frame "+(i+1)+":");
+                for(int j = 0; j<currentSeq.getOrflijst().get(i).size();j++){
+                    jTextPanedos.setText(jTextPanedos.getText()+"\n "+currentSeq.getOrflijst().get(i).get(j).getSeq() + "  Locatie: "+currentSeq.getOrflijst().get(i).get(j).getBegin() + " - " + currentSeq.getOrflijst().get(i).get(j).getEnd());
+                }
+            }
+        }catch(notFasta ex){
+            JOptionPane.showMessageDialog(null, ex);
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
     
     public void visualize(){
