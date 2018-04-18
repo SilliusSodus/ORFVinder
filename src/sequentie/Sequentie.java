@@ -69,7 +69,7 @@ public class Sequentie {
 	}
 
 
-	public void ORFA( int p, boolean check){
+	public void findORF( int p, boolean check){
     	String seq = this.sequentie1;
     	
 	    if (check){
