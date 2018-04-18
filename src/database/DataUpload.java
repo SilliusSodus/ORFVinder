@@ -106,7 +106,7 @@ public class DataUpload {
      * geen output
      */
     public static void insertQueryBuilder(String tabel, String ruwe_values) throws ClassNotFoundException, SQLException, UnsupportedEncodingException {
-        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName("org.apache.derby.jdbc.ClientDriver");
         Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ORFVinder databank", "owe7_pg5", "blaat1234");
         String values = values(tabel);
         PreparedStatement pst = con.prepareStatement("insert into " + tabel + " " + values + "");
