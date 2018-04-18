@@ -1,13 +1,8 @@
 package sequentie;
 import java.util.*;
 public class ORF {
-    int n;
-    int k;
-    int a = 0;
     int begin,end;
     String seq;
-    String[] linesa = new String [10];
-    String[] linesb = new String [10];
     
     ORF(String seq,int begin, int end){
     	this.seq = seq;
@@ -73,14 +68,5 @@ public class ORF {
 
 	public void setSeq(String seq) {
 		this.seq = seq;
-	}
-
-
-
-
-    
-    
-    
-    
-    
+	}    
 }
