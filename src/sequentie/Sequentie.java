@@ -1,7 +1,9 @@
 package sequentie;
 import filin.FileOpener;
+import filin.FileOpener.notFasta;
 import java.awt.Color;
 import java.util.*;
+import javax.swing.JOptionPane;
 import main.GUI;
 
 public class Sequentie {
@@ -11,7 +13,7 @@ public class Sequentie {
     ArrayList<ArrayList<ORF>> orflijst = new ArrayList<ArrayList<ORF>>() ;
    
     
-    public String getSequentie1() {
+    public String getSequentie1()  {
 		return sequentie1;
 	}
 
@@ -41,7 +43,8 @@ public class Sequentie {
 	}
 
 
-	public Sequentie(){
+	public Sequentie() throws notFasta{
+       
         for (int i = 0; i<6;i++){
             orflijst.add(new ArrayList<ORF>());
         }
@@ -53,10 +56,11 @@ public class Sequentie {
 
         for (int p =0; p <orflijst.size();p++){
             check = p+1>(orflijst.size()/2);
-            ORFA(p,check);
+            findORF(p,check);
                 
         }       
     }
+        
     
     
     public String getTitel() {
@@ -69,7 +73,7 @@ public class Sequentie {
 	}
 
 
-	public void ORFA( int p, boolean check){
+	public void findORF( int p, boolean check){
     	String seq = this.sequentie1;
     	
 	    if (check){
