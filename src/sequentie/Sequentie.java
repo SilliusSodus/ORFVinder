@@ -53,7 +53,7 @@ public class Sequentie {
 
         for (int p =0; p <orflijst.size();p++){
             check = p+1>(orflijst.size()/2);
-            ORFA(p,check);
+            findORF(p,check);
                 
         }       
     }
