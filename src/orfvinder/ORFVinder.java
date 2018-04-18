@@ -7,7 +7,7 @@ package orfvinder;
 
 /**
  *
- * @author ruben kollen
+ * hmm? What do you mean? I see nothing.
  */
 public class ORFVinder {
 

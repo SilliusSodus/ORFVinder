@@ -13,7 +13,11 @@ import javax.xml.xpath.*;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import sequentie.ORF;
-
+/**
+ * De database logica
+ * @author Erik
+ *
+ */
 public class DataUpload {
 
         /**Wordt gebruikt om de sequentie om te zetten naar een blob

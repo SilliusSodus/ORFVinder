@@ -6,9 +6,11 @@
 package main;
 
 import java.awt.Font;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -16,8 +18,10 @@ import java.io.Writer;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 import Python.Blast;
+import filin.FileOpener.Cancel;
 import filin.FileOpener.notFasta;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
@@ -27,8 +31,11 @@ import java.util.logging.Logger;
 import sequentie.Sequentie;
 
 /**
- *
- * @author Erik
+ * Voor de graphische user interface
+ * (bit of a mess, but you know.. gui builders, can't live with them, can't live without them)
+ * JComboBox, voor de menus
+ * currentSeq, De huidige sequentie die uitgebeeld is.
+ * @author Erik, Ruben, Sebastiaan
  */
 public class GUI extends javax.swing.JFrame {
 	
@@ -70,17 +77,18 @@ public class GUI extends javax.swing.JFrame {
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        jTextPane1 = new javax.swing.JTextPane();
-        jTextPanedos =  new javax.swing.JTextPane();
+        jTextArea = new javax.swing.JTextArea();
+        jTextAreados =  new javax.swing.JTextArea();
         
 
         jFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         
-        jScrollPane1.setViewportView(jTextPane1);
-        jScrollPane2.setViewportView(jTextPanedos);
+        jScrollPane1.setViewportView(jTextArea);
+        jScrollPane2.setViewportView(jTextAreados);
         
-        jTextPane1.setFont(new Font("monospaced", Font.PLAIN, 12));
+        jTextArea.setFont(new Font("monospaced", Font.PLAIN, 12));
 
+        
         jMenu4.setText("File");
         jMenuBar2.add(jMenu4);
 
@@ -160,12 +168,7 @@ public class GUI extends javax.swing.JFrame {
         }
 
         jMenuBar1.add(jMenu3);
-
-        //jMenu1.setText("Translate");
-        //jMenuBar1.add(jMenu1);
         
-        
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -190,8 +193,12 @@ public class GUI extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>
-    
+    }
+    /**
+     * Action performed op alle blast mogelijkheden
+     * @param evt, het event dat de functie aanslaat
+     * @param menu, het menu waaruit gekozen is
+     */
     private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt, javax.swing.JMenu menu){
     	try{
     		String seq = JOptionPane.showInputDialog("Copy and paste the ORF you wish to blast:");
@@ -200,20 +207,26 @@ public class GUI extends javax.swing.JFrame {
 	    		JOptionPane.showMessageDialog(null, "You can find the blast results in the \"BlastResults\" folder.");
 	    	}
 	    	else{
-	    		JOptionPane.showMessageDialog(null,"Bigger meanie");
+	    		JOptionPane.showMessageDialog(null,"You left it blank you silly.");
 	    	}
     	}
     	catch(Exception e){
     		JOptionPane.showMessageDialog(null,"Meanie");
     	}
     }
-
+/**
+ * Data base, nvm
+ * @param evt
+ * @throws ClassNotFoundException
+ * @throws SQLException
+ * @throws UnsupportedEncodingException
+ */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) throws ClassNotFoundException, SQLException, UnsupportedEncodingException {
         //database.DataUpload.main(currentSeq);
     }
 
     /**
-     * @param args the command line arguments
+     * Het tekenen van de gui
      */
     public static void draw() {
         /* Set the Nimbus look and feel */
@@ -237,18 +250,13 @@ public class GUI extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new GUI().setVisible(true);
             }
         });
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    
     private javax.swing.JFrame jFrame1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -268,40 +276,48 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextPane jTextPane1,jTextPanedos;
-    // End of variables declaration//GEN-END:variables
+    private javax.swing.JTextArea jTextArea,jTextAreados;
     
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        try{
-            currentSeq = new Sequentie();
-        
-            visualize();
-            for(int i =0; i<currentSeq.getOrflijst().size();i++){
-                jTextPanedos.setText(jTextPanedos.getText()+"\n \n Frame "+(i+1)+":");
-                for(int j = 0; j<currentSeq.getOrflijst().get(i).size();j++){
-                    jTextPanedos.setText(jTextPanedos.getText()+"\n "+currentSeq.getOrflijst().get(i).get(j).getSeq() + "  Locatie: "+currentSeq.getOrflijst().get(i).get(j).getBegin() + " - " + currentSeq.getOrflijst().get(i).get(j).getEnd());
-                }
-            }
-        }catch(notFasta ex){
-            JOptionPane.showMessageDialog(null, ex);
-        }
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-    
+        try {
+			currentSeq = new Sequentie();
+			visualize();
+			for(int i =0; i<currentSeq.getOrflijst().size();i++){
+				jTextAreados.setText(jTextAreados.getText()+"\n \n Frame "+(i+1)+":");
+			    for(int j = 0; j<currentSeq.getOrflijst().get(i).size();j++){
+			    	jTextAreados.setText(jTextAreados.getText()+"\n "+currentSeq.getOrflijst().get(i).get(j).getSeq() + "  Locatie: "+currentSeq.getOrflijst().get(i).get(j).getBegin() + " - " + currentSeq.getOrflijst().get(i).get(j).getEnd());
+			    }
+			}
+		} catch (notFasta e) {
+			JOptionPane.showMessageDialog(null, e);
+		}
+          catch(Cancel e){
+        	 ;
+          }
+      
+		
+    }
+    /**
+     * Visualiseert de verscheidene frames en sequentie (forward en reverse) in de gui
+     */
     public void visualize(){
     	StringBuilder visu = new StringBuilder();
     	int end =0;
     	int begin = 0;
-    	visu.append(currentSeq.getSequentie1()+"\n") ;
+    	visu.append("seq:5'"+currentSeq.getSequentie1()+"3'\n") ;
     	for(int i= 0; i < currentSeq.getOrflijst().size(); i++){
     		if (i == 3){
     			visu.append("\n");
     		}
+    		visu.append("frame"+(i+1));
     		end = 0;
     		for(int j = 0; j < currentSeq.getOrflijst().get(i).size(); j++){
     			begin = currentSeq.getOrflijst().get(i).get(j).getBegin();
-    			for(int k = end; k< begin; k++){
+    			
+    			for(int k = end; k < begin; k++){
     				visu.append(" ");
     			}
+    			
     			end = currentSeq.getOrflijst().get(i).get(j).getEnd();
     			visu.append(currentSeq.getOrflijst().get(i).get(j).getSeq());
     			
@@ -309,21 +325,11 @@ public class GUI extends javax.swing.JFrame {
     		}
     		visu.append("\n");
     	}
-    	visu.append(new StringBuilder(currentSeq.getSequentie1()).reverse().toString());
-    	Writer writer;
-    	try {
-			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("rapport.html"), "utf-8"));
-			writer.write(visu.toString());
-			writer.close();
-		} catch (UnsupportedEncodingException | FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	jTextPane1.setText(visu.toString());
+    	System.out.println("done");
+    	visu.append("seq:3'"+new StringBuilder(currentSeq.getSequentie1()).reverse().toString()+ "5'");
+    	
+    	jTextArea.setText(visu.toString());
     }
+    
     
 }

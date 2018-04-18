@@ -6,7 +6,7 @@
 package database;
 
 /**
- *
+ * Hier niet naar kijken. Dit was nog het ambitieuze deel waar we een gui voor de database hadden gebouwd.
  * @author Erik
  */
 public class DatabaseGUI extends javax.swing.JFrame {
