@@ -5,7 +5,11 @@
  */
 package main;
 
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.AdjustmentEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -18,7 +22,13 @@ import java.io.Writer;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.RepaintManager;
+import javax.swing.Scrollable;
+
+import com.sun.javafx.tk.FontMetrics;
 
 import Python.Blast;
 import filin.FileOpener.Cancel;
@@ -62,7 +72,8 @@ public class GUI extends javax.swing.JFrame {
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea = new SequentieMapper("The sequence and its ORF's will be shown here");
+        jScrollPane1 = new javax.swing.JScrollPane(jTextArea);
         jScrollPane2 = new javax.swing.JScrollPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
@@ -77,16 +88,19 @@ public class GUI extends javax.swing.JFrame {
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        jTextArea = new javax.swing.JTextArea();
-        jTextAreados =  new javax.swing.JTextArea();
+        jTextAreados =  new javax.swing.JEditorPane();
         
-
+        
         jFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jScrollPane1.setViewportView((jTextArea));
+        jScrollPane1.getHorizontalScrollBar().addAdjustmentListener(new java.awt.event.AdjustmentListener(){
+			@Override
+			public void adjustmentValueChanged(AdjustmentEvent e) {
+				jTextArea.setBarLoca(e.getValue());
+			}
+        });
         
-        jScrollPane1.setViewportView(jTextArea);
         jScrollPane2.setViewportView(jTextAreados);
-        
-        jTextArea.setFont(new Font("monospaced", Font.PLAIN, 12));
 
         
         jMenu4.setText("File");
@@ -191,7 +205,6 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(30, Short.MAX_VALUE))
         );
-
         pack();
     }
     /**
@@ -276,18 +289,21 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea,jTextAreados;
+    private SequentieMapper jTextArea;
+    private javax.swing.JEditorPane jTextAreados;
     
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         try {
 			currentSeq = new Sequentie();
 			visualize();
+			StringBuilder s = new StringBuilder();
 			for(int i =0; i<currentSeq.getOrflijst().size();i++){
-				jTextAreados.setText(jTextAreados.getText()+"\n \n Frame "+(i+1)+":");
+				s.append(" \n Frame "+(i+1)+":");
 			    for(int j = 0; j<currentSeq.getOrflijst().get(i).size();j++){
-			    	jTextAreados.setText(jTextAreados.getText()+"\n "+currentSeq.getOrflijst().get(i).get(j).getSeq() + "  Locatie: "+currentSeq.getOrflijst().get(i).get(j).getBegin() + " - " + currentSeq.getOrflijst().get(i).get(j).getEnd());
+			    	s.append("\n "+currentSeq.getOrflijst().get(i).get(j).getSeq() + "  Locatie: "+currentSeq.getOrflijst().get(i).get(j).getBegin() + " - " + currentSeq.getOrflijst().get(i).get(j).getEnd());
 			    }
 			}
+			jTextAreados.setText(s.toString());
 		} catch (notFasta e) {
 			JOptionPane.showMessageDialog(null, e);
 		}
@@ -325,11 +341,88 @@ public class GUI extends javax.swing.JFrame {
     		}
     		visu.append("\n");
     	}
-    	System.out.println("done");
     	visu.append("seq:3'"+new StringBuilder(currentSeq.getSequentie1()).reverse().toString()+ "5'");
-    	
-    	jTextArea.setText(visu.toString());
+    	jTextArea.setSeq(visu.toString(),jScrollPane1);
     }
     
-    
+    /**
+     * @author sebastiaan
+     * Klasse die er voor zorgt dat alleen een deel van de sequentie getekend wordt.
+     * seq, de string die getekend moet worden.
+     * barLoca, De locatie van de scrollbar.
+     *
+     */
+    public class SequentieMapper extends JPanel{
+    	String seq;
+    	int barLoca;
+    	
+    	/**
+    	 * De constructor van SequentieMapper.
+    	 * @param seq, de String die getekend moet worden.
+    	 */
+    	public SequentieMapper(String seq){
+    		super();
+    		this.seq = seq;
+    		barLoca = 0;
+    	}
+    	
+    	/**
+    	 * Geeft de groote van het hele veld aan.
+    	 */
+    	@Override 
+    	public Dimension getPreferredSize() {
+    		java.awt.FontMetrics fm = getFontMetrics(new Font("monospaced", Font.PLAIN, 12));
+    		return new Dimension((int)fm.stringWidth(seq.split("\n")[0]), 100);
+        }
+    	/**
+    	 * Tekent de sequentie op het veld.
+    	 */
+    	@Override
+        protected void paintComponent(Graphics g) {
+    		super.paintComponent(g);
+    		g.setFont(new Font("monospaced", Font.PLAIN, 12));
+    		String[] text = seq.split("\n");
+    		
+    		for(int i =0; i < text.length; i++){ 			
+    			if(text[i].length()>0){
+    				g.drawString(text[i].substring(Math.max(0,Math.min((int)(((double)barLoca/g.getFontMetrics().getWidths()[32])),text[i].length())), Math.min(text[i].length(), (int)(((double)barLoca/g.getFontMetrics().getWidths()[32]))+130)), barLoca, g.getFontMetrics().getHeight()*(i+1));
+    			}
+    		}
+    	}
+    	/**
+    	 * Getter voor seq.
+    	 * @return seq
+    	 */
+    	public String getSeq() {
+    		return seq;
+    	}
+    	
+    	/**
+    	 * getter voor barLoca.
+    	 * @return barLoca
+    	 */
+    	public int getBarLoca() {
+			return barLoca;
+		}
+    	
+    	/**
+    	 * Setter voor barLoca, hierbij wordt de panel ook gelijk opnieuw getekend.
+    	 * @param barLoca, de locatie van de scrollbar.
+    	 */
+		public void setBarLoca(int barLoca) {
+			this.barLoca = barLoca;
+			this.repaint();
+		}
+		
+		/**
+		 * Setter voor seq, Hierbij wordt de panel ook gelijk opnieuw getekend en het veld opnieuw opgemeten.
+		 * @param seq, de string die getekend wordt.
+		 * @param jsp, de scrollpane waar de panel zich in bevind.
+		 */
+		public void setSeq(String seq,JScrollPane jsp) {
+    		this.seq = seq;
+    		jsp.revalidate();
+    		this.repaint();
+    	}
+    }
 }
