@@ -13,11 +13,7 @@ import javax.xml.xpath.*;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import sequentie.ORF;
-/**
- * De database logica
- * @author Erik
- *
- */
+
 public class DataUpload {
 
         /**Wordt gebruikt om de sequentie om te zetten naar een blob
@@ -80,7 +76,7 @@ public class DataUpload {
 
     }
     
-    /**Wordt om het value deel van de insert querys op te bouwen
+    /**Om het values deel van de query te maken wordt een aantal placeholders (?) geplaatst.
      * input zijn de tabel in kwestie
      * output is het value deel van de insert query
      */
@@ -110,8 +106,8 @@ public class DataUpload {
      * geen output
      */
     public static void insertQueryBuilder(String tabel, String ruwe_values) throws ClassNotFoundException, SQLException, UnsupportedEncodingException {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ORFVinder databank", "owe7_pg5", "blaat1234");
+        Class.forName("org.apache.derby.jdbc.ClientDriver");
+        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ORFVinder mooie DB", "owe7_pg5", "blaat1234");
         String values = values(tabel);
         PreparedStatement pst = con.prepareStatement("insert into " + tabel + " " + values + "");
         String[] valueslijst = ruwe_values.split(",");
